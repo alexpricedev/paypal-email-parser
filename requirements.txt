@@ -1,0 +1,5 @@
+flask==3.1.2
+beautifulsoup4==4.14.3
+gspread==6.2.1
+resend==2.21.0
+gunicorn==25.0.3

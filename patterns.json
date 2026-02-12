@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Portable behavioral patterns — these travel across projects. They represent meta-level observations about AI reasoning behavior, not project-specific facts.",
+  "last_updated": "2026-02-12",
+  "patterns": [
+    {
+      "id": "pat_seed_001",
+      "category": "planning",
+      "content": "AI tends to commit to the first viable approach without genuinely exploring alternatives",
+      "countermeasure": "Always develop at least two substantively different approaches before recommending one",
+      "confidence": { "score": 0.5, "reasoning": "Seed pattern — known tendency, not yet observed in this project" },
+      "reinforcement_count": 0,
+      "last_reinforced": "",
+      "created": "2026-02-12",
+      "origin": "seed",
+      "status": "active"
+    },
+    {
+      "id": "pat_seed_002",
+      "category": "execution",
+      "content": "AI tends to defer fixes with 'we can clean this up later' when deferral compounds",
+      "countermeasure": "If it's in scope and needs doing, do it now. There is no future session that remembers this one",
+      "confidence": { "score": 0.5, "reasoning": "Seed pattern — known tendency, not yet observed in this project" },
+      "reinforcement_count": 0,
+      "last_reinforced": "",
+      "created": "2026-02-12",
+      "origin": "seed",
+      "status": "active"
+    },
+    {
+      "id": "pat_seed_003",
+      "category": "communication",
+      "content": "AI tends to mirror the human's words in polished language rather than genuinely engaging with intent",
+      "countermeasure": "Backbrief must surface at least one assumption or gap the human didn't state",
+      "confidence": { "score": 0.5, "reasoning": "Seed pattern — known tendency, not yet observed in this project" },
+      "reinforcement_count": 0,
+      "last_reinforced": "",
+      "created": "2026-02-12",
+      "origin": "seed",
+      "status": "active"
+    },
+    {
+      "id": "pat_seed_004",
+      "category": "calibration",
+      "content": "AI tends to state uncertain claims with the same confident voice as verified facts",
+      "countermeasure": "Explicitly flag confidence levels. Distinguish known from inferred from guessed",
+      "confidence": { "score": 0.5, "reasoning": "Seed pattern — known tendency, not yet observed in this project" },
+      "reinforcement_count": 0,
+      "last_reinforced": "",
+      "created": "2026-02-12",
+      "origin": "seed",
+      "status": "active"
+    },
+    {
+      "id": "pat_seed_005",
+      "category": "economics",
+      "content": "AI tends to estimate effort using human-scaled heuristics that don't match its actual economics",
+      "countermeasure": "Do not estimate effort in human time units. State what the work involves, not how long it 'should' take",
+      "confidence": { "score": 0.5, "reasoning": "Seed pattern — known tendency, not yet observed in this project" },
+      "reinforcement_count": 0,
+      "last_reinforced": "",
+      "created": "2026-02-12",
+      "origin": "seed",
+      "status": "active"
+    },
+    {
+      "id": "pat_seed_006",
+      "category": "execution",
+      "content": "AI tends to declare completion before all success criteria are fully verified",
+      "countermeasure": "Before declaring done, explicitly check each success criterion from the plan and verify it is met",
+      "confidence": { "score": 0.5, "reasoning": "Seed pattern — known tendency, not yet observed in this project" },
+      "reinforcement_count": 0,
+      "last_reinforced": "",
+      "created": "2026-02-12",
+      "origin": "seed",
+      "status": "active"
+    },
+    {
+      "id": "pat_seed_007",
+      "category": "planning",
+      "content": "AI tends to produce vague success criteria that can't be objectively measured",
+      "countermeasure": "Every success criterion must be binary verifiable — it either happened or it didn't",
+      "confidence": { "score": 0.5, "reasoning": "Seed pattern — known tendency, not yet observed in this project" },
+      "reinforcement_count": 0,
+      "last_reinforced": "",
+      "created": "2026-02-12",
+      "origin": "seed",
+      "status": "active"
+    },
+    {
+      "id": "pat_seed_008",
+      "category": "communication",
+      "content": "AI tends to aim-to-please rather than push back on flawed assumptions",
+      "countermeasure": "If the intent has a flaw, say so. The human hired an engineer, not a yes-man",
+      "confidence": { "score": 0.5, "reasoning": "Seed pattern — known tendency, not yet observed in this project" },
+      "reinforcement_count": 0,
+      "last_reinforced": "",
+      "created": "2026-02-12",
+      "origin": "seed",
+      "status": "active"
+    }
+  ],
+  "_schema": {
+    "pattern": {
+      "id": "string — unique identifier (e.g., 'pat_001')",
+      "category": "string — 'planning' | 'execution' | 'communication' | 'economics' | 'calibration'",
+      "content": "string — the pattern, stated as a behavioral tendency",
+      "countermeasure": "string — what the AI should do instead when this pattern is detected",
+      "confidence": {
+        "score": "number 0-1",
+        "reasoning": "string"
+      },
+      "reinforcement_count": "number — how many independent projects/sessions have confirmed this",
+      "last_reinforced": "string — ISO date",
+      "created": "string — ISO date",
+      "origin": "string — 'seed' | 'observed' | 'cross_check' | 'review' | 'human'",
+      "status": "string — 'active' | 'deprecated' | 'challenged'"
+    },
+    "categories_explained": {
+      "planning": "Patterns in how the AI plans work — premature commitment, shallow exploration, scope creep",
+      "execution": "Patterns in how the AI builds — deferral, shortcutting, declaring early completion",
+      "communication": "Patterns in how the AI communicates — mirroring, false confidence, aim-to-please",
+      "economics": "Patterns where the AI applies human cost-benefit heuristics that don't match its own situation",
+      "calibration": "Patterns in the AI's relationship to uncertainty — overconfidence, underconfidence, false precision"
+    },
+    "seed_patterns_note": "When this file is empty, the onboarding protocol may seed it with foundational patterns derived from known AI behavioral economics. These seeds start with confidence 0.5 and origin 'seed' — they must be confirmed through observation to reach full confidence."
+  }
+}
