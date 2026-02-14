@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 
 from flask import Flask, request, jsonify
 
-from paypal_parser import parse_paypal_email, ParseError
+from paypal_parser import parse_paypal_email, ParseError, extract_notes
 from sheets import get_worksheet, is_duplicate, append_transaction
 from alerts import send_alert
 
@@ -68,6 +68,7 @@ def incoming_email():
         return jsonify({"error": "No payload"}), 400
 
     html = payload.get("html", "")
+    plain = payload.get("plain", "")
     headers = payload.get("headers", {})
     subject = headers.get("subject", "")
     email_hash = hashlib.sha256(html.encode()).hexdigest()[:16] if html else "no-html"
@@ -94,20 +95,26 @@ def incoming_email():
     except ParseError as e:
         msg = str(e)
         logger.error(f"Parse failed: {msg}")
+        notes_context = extract_notes(plain)
         send_alert(
             "Template Change Detected",
             f"{msg}\n\n"
             f"Email hash: {email_hash}\n\n"
-            "This likely means PayPal has changed their email template. "
+            + (f"Notes from forwarded email: {notes_context}\n\n" if notes_context else "")
+            + "This likely means PayPal has changed their email template. "
             "The parser code needs updating.",
         )
         # Return 200 — retrying won't help if the template changed
         return jsonify({"error": msg}), 200
 
+    notes = extract_notes(plain)
+    transaction.notes = notes
+
     logger.info(
         f"Parsed transaction: id={transaction.transaction_id} "
         f"date={transaction.date} merchant={transaction.merchant} "
         f"amount=£{transaction.amount}"
+        + (f" notes='{transaction.notes}'" if transaction.notes else "")
     )
 
     # Write to Google Sheets
@@ -128,6 +135,7 @@ def incoming_email():
             transaction.amount,
             transaction.merchant,
             transaction.transaction_id,
+            transaction.notes,
         )
         logger.info(f"Written to sheet: {transaction.transaction_id}")
 
@@ -155,6 +163,7 @@ def incoming_email():
         "status": "success",
         "transaction_id": transaction.transaction_id,
         "email_hash": email_hash,
+        "notes": transaction.notes,
     }), 200
 
 

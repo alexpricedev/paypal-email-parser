@@ -5,7 +5,7 @@ Run: python test_parser.py
 import sys
 import os
 
-from paypal_parser import parse_paypal_email, ParseError
+from paypal_parser import parse_paypal_email, ParseError, extract_notes
 
 
 def test_sample_email():
@@ -67,7 +67,61 @@ def test_malformed_html():
         print(f"PASSED — malformed HTML correctly raises ParseError: {e}")
 
 
+def test_notes_above_delimiter():
+    """Notes typed above the Protonmail forwarding delimiter are extracted."""
+    plain = "Groceries for the week\n------- Forwarded Message -------\nOriginal email content here"
+    assert extract_notes(plain) == "Groceries for the week"
+    print("PASSED — notes above delimiter extracted correctly")
+
+
+def test_notes_multiline():
+    """Multiline notes are preserved."""
+    plain = "Groceries\nWeekly shop\n------- Forwarded Message -------\nOriginal"
+    assert extract_notes(plain) == "Groceries\nWeekly shop"
+    print("PASSED — multiline notes preserved correctly")
+
+
+def test_no_delimiter():
+    """No delimiter means no notes (direct email, not forwarded)."""
+    plain = "Just some plain text email body"
+    assert extract_notes(plain) == ""
+    print("PASSED — no delimiter returns empty notes")
+
+
+def test_delimiter_but_no_notes():
+    """Delimiter present but nothing typed above it."""
+    plain = "------- Forwarded Message -------\nOriginal email content"
+    assert extract_notes(plain) == ""
+    print("PASSED — delimiter with no notes returns empty")
+
+
+def test_whitespace_only_above_delimiter():
+    """Only whitespace above delimiter counts as no notes."""
+    plain = "  \n\n------- Forwarded Message -------\nOriginal"
+    assert extract_notes(plain) == ""
+    print("PASSED — whitespace-only above delimiter returns empty")
+
+
+def test_empty_plain():
+    """Empty string input returns empty notes."""
+    assert extract_notes("") == ""
+    print("PASSED — empty string returns empty notes")
+
+
+def test_none_plain():
+    """None input returns empty notes (defensive — plain field missing from payload)."""
+    assert extract_notes(None) == ""
+    print("PASSED — None input returns empty notes")
+
+
 if __name__ == "__main__":
     test_sample_email()
     test_malformed_html()
+    test_notes_above_delimiter()
+    test_notes_multiline()
+    test_no_delimiter()
+    test_delimiter_but_no_notes()
+    test_whitespace_only_above_delimiter()
+    test_empty_plain()
+    test_none_plain()
     print("\nAll tests passed.")

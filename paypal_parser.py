@@ -15,6 +15,25 @@ class Transaction:
     date: str
     merchant: str
     amount: float
+    notes: str = ""
+
+
+PROTONMAIL_DELIMITER = "------- Forwarded Message -------"
+
+
+def extract_notes(plain_text: str | None) -> str:
+    """Extract user-typed notes from above the Protonmail forwarding delimiter.
+
+    When the user forwards a PayPal receipt from Protonmail, any text they type
+    above the forwarded content appears before the delimiter in the plain text body.
+    Returns empty string if no notes are found.
+    """
+    if not plain_text:
+        return ""
+    parts = plain_text.split(PROTONMAIL_DELIMITER, 1)
+    if len(parts) < 2:
+        return ""
+    return parts[0].strip()
 
 
 def parse_paypal_email(html: str) -> Transaction:

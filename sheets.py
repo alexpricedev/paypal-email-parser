@@ -38,11 +38,11 @@ def is_duplicate(worksheet, transaction_id: str) -> bool:
 
 
 def append_transaction(
-    worksheet, date: str, amount: float, merchant: str, transaction_id: str
+    worksheet, date: str, amount: float, merchant: str, transaction_id: str, notes: str = ""
 ):
     """Append a transaction row to the sheet."""
     worksheet.append_row(
-        [date, amount, merchant, transaction_id],
+        [date, amount, merchant, transaction_id, notes],
         value_input_option="USER_ENTERED",
     )
     logger.info(f"Appended transaction {transaction_id} to sheet")
